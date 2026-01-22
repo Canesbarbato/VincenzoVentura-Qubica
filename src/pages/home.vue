@@ -38,8 +38,8 @@ import { watch } from 'vue'
 import{ useProducts } from '@/app/action/useProduct'
 import ProductCard from '@/components/ProductCard.vue'
 
-
 const { data, isFetching, error } = useProducts()// automatically parses JSON
+
 watch(data, (value) => {
   if (value) {
     console.log('Data loaded:', value)
