@@ -7,12 +7,11 @@
 
 <script setup lang="ts">
 import type { Product } from '@/app/types/product'
-import { useRouter, useRoute } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { useProduct } from '@/app/action/useProduct'
 import { ref, watch } from 'vue'
 import SingleProduct from '@/components/SingleProduct.vue'
 import NotFoundProduct from '@/components/NotFoundProduct.vue'
-const router = useRouter()
 const route = useRoute()
 
 defineProps<{
