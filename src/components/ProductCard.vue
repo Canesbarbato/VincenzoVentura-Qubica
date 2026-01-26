@@ -1,16 +1,11 @@
-
-
 <template>
-  <n-card
-    class="product-card"
-    hoverable
-  >
+  <n-card class="product-card" hoverable>
     <!-- Product Image -->
     <template #cover>
       <div class="image-wrapper" @click="goToProduct(product.id)">
         <!-- Loading skeleton -->
         <div v-if="isLoading" class="skeleton-loader" />
-        
+
         <!-- Error fallback -->
         <div v-if="imageError" class="image-error">
           <n-icon size="48">
@@ -19,17 +14,8 @@
         </div>
 
         <!-- Image -->
-        <n-image
-          v-if="!imageError"
-          :src="product.image"
-          alt="product image"
-          object-fit="contain"
-          preview-disabled
-          lazy
-          :class="{ 'fade-in': !isLoading }"
-          @load="isLoading = false"
-          @error="handleImageError"
-        />
+        <n-image v-if="!imageError" :src="product.image" alt="product image" object-fit="contain" preview-disabled lazy
+          :class="{ 'fade-in': !isLoading }" @load="isLoading = false" @error="handleImageError" />
       </div>
     </template>
 
@@ -40,45 +26,34 @@
 
     <!-- Rating -->
     <div class="rating">
-      <n-rate
-        :value="product.rating.rate"
-        readonly
-        size="small"
-      />
+      <n-rate :value="product.rating.rate" readonly size="small" />
       <span class="count">
         ({{ product.rating.count }})
       </span>
     </div>
 
     <!-- Price -->
-    <div  
-        class="price">
+    <div class="price">
       ${{ product.price.toFixed(2) }}
     </div>
 
     <!-- Actions -->
     <template v-if="isAuthenticated" #action>
       <n-flex direction="horizontal" gap="8px">
-      <n-button
-        type="warning"
-        block
-        @click="addItem({...product,quantity:1})"
-      >
-        Add to cart
-      </n-button>
-            <n-button
-        type="warning"
-        block
-        @click="addToWishlist(product.id)"
-      >
-        Add to wishlistr
-      </n-button>
+        <buy-box :product="product" :display-quantity="false" :display-remove="false" />
       </n-flex>
     </template>
-   
+
   </n-card>
 </template>
 <script setup lang="ts">
+
+
+defineProps<{
+  product: Product
+  showPrice?: boolean
+}>()
+
 import { ref, watch } from 'vue'
 import type { Product } from '@/app/types/product'
 import { NIcon } from 'naive-ui'
@@ -88,31 +63,24 @@ import { useCartStore } from '@/app/stores/cart';
 import { useAuthStore } from '@/app/stores/authentication'
 import { storeToRefs } from 'pinia'
 import { useWishlistStore } from '@/app/stores/wishlist'
+import AddToCartButton from './atoms/AddToCartButton.vue';
+import BuyBox from './organisms/BuyBox.vue';
 const { goToProduct } = useProductNavigation()
-const {addItem} = useCartStore()
+const { addItem } = useCartStore()
 const isLoading = ref(true)
 const imageError = ref(false)
-
-defineProps<{
-  product: Product
-  showPrice?: boolean
-}>()
-
-const handleImageError = () => {
-  imageError.value = true
-  isLoading.value = false
-}
 
 const authStore = useAuthStore()
 const { isAuthenticated } = storeToRefs(authStore)
 
 const WishlistStore = useWishlistStore()
-const { addItem :addToWishlist } = WishlistStore
+const { addItem: addToWishlist } = WishlistStore
 const { items } = storeToRefs(WishlistStore)
 
-watch(items, (newItems) => {
-  console.log('Wishlist items updated:', newItems,items.value)
-}, { immediate: true })
+const handleImageError = () => {
+  imageError.value = true
+  isLoading.value = false
+}
 </script>
 <style scoped lang="scss">
 .product-card {
@@ -133,12 +101,10 @@ watch(items, (newItems) => {
 .skeleton-loader {
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    #f0f0f0 25%,
-    #e0e0e0 50%,
-    #f0f0f0 75%
-  );
+  background: linear-gradient(90deg,
+      #f0f0f0 25%,
+      #e0e0e0 50%,
+      #f0f0f0 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
@@ -147,6 +113,7 @@ watch(items, (newItems) => {
   0% {
     background-position: 200% 0;
   }
+
   100% {
     background-position: -200% 0;
   }
@@ -199,7 +166,8 @@ watch(items, (newItems) => {
 .price {
   font-size: 1.125rem;
   font-weight: 700;
-  color: #b12704; /* Amazon-like red */
+  color: #b12704;
+  /* Amazon-like red */
   margin-top: 0.25rem;
 }
 </style>

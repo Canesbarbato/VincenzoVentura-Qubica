@@ -1,32 +1,41 @@
 // stores/cart.ts
 import { defineStore } from 'pinia'
 import { useLocalStorage } from '@vueuse/core'
-import type { Ref } from 'vue'
+import { computed, type Ref } from 'vue'
 import type { Product } from '../types/product'
 
-export type WishListItem = number
+export type WishListItem = {
+  id: number
+  title: string
+  price: number
+  image: string
+}
 
 export type UseuseWishlistStoreeReturn = {
 
-  items: Ref<string[]>
+  items: Ref<WishListItem[]>
 
-  addItem: (productID:string) => Promise<void>
-  removeItem: (productID:string) => Promise<void>
+  addItem: (product:WishListItem) => Promise<void>
+  removeItem: (productID:number) => Promise<void>
 }
 
 export const useWishlistStore = defineStore('wishlist', () => {
   const items = useLocalStorage<WishListItem[]>('wishlist-items', [])
+  
+  const isInWishlist = computed(() => {
+    return (productId: number): boolean =>
+      items.value.some(item => item.id === productId)
+  })
 
-
-  function addItem(productID: WishListItem) {
-    const existing = items.value.find(i => i=== productID)
+  function addItem(product: WishListItem) {
+    const existing = items.value.find(i => i.id=== product.id)
     if (existing) {
     /// highlight wishlist item already exists
-    }else{items.value.push(productID)}
+    }else{items.value.push(product)}
   }
 
   function removeItem(productID: number) {
-    items.value = items.value.filter(i => i !== productID)
+    items.value = items.value.filter(i => i.id !== productID)
   }
 
   function clearWishlist() {
@@ -35,6 +44,8 @@ export const useWishlistStore = defineStore('wishlist', () => {
 
   return {
     items,
+    isInWishlist,
+
     addItem,
     removeItem,
     clearWishlist

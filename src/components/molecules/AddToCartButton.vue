@@ -1,0 +1,27 @@
+          <template v-slot:icon>
+            <n-button :render-icon="renderIcon" type="primary" class="btn btn-primary" :disabled="quantity <= 0" @click="addItem({ ...product, quantity })">
+                Add to Cart
+              
+            </n-button>
+        </template>
+<script setup lang="ts">
+import { ShoppingCartArrowDown } from '@vicons/carbon'
+import { useCartStore } from '@/app/stores/cart';
+import type { Product } from '@/app/types/product';
+import { useAuthStore } from '@/app/stores/authentication';
+import { storeToRefs } from 'pinia';
+import { h } from 'vue';
+
+const { addItem } = useCartStore()
+const authStore = useAuthStore()
+
+function renderIcon() {
+  return h(ShoppingCartArrowDown, null, {
+    default: () => h(ShoppingCartArrowDown)
+  })
+}
+defineProps<{
+    product: Product
+    quantity: number
+}>()
+</script>

@@ -18,7 +18,7 @@
                 <div class="item-info">
                <n-text strong align-text="left">{{ item.title }}</n-text>
                <br />
-                  <n-text class="price">${{ item.price.toFixed(2) }}</n-text> 
+                  <!-- <n-text class="price">${{ item.price.toFixed(2) }}</n-text> -->
                                 </div>
                 </n-flex>
                 </n-flex>
