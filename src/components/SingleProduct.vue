@@ -17,69 +17,45 @@
         <!-- Rating Section -->
         <div class="rating-section">
           <div class="stars">
-            <span v-for="i in 5" :key="i" class="star" :class="{ filled: i <= Math.round(product.rating.rate) }">★</span>
+            <span v-for="i in 5" :key="i" class="star"
+              :class="{ filled: i <= Math.round(product.rating.rate) }">★</span>
             <span class="rating-value">{{ product.rating.rate }}</span>
             <span class="rating-count">{{ product.rating.count }} ratings</span>
           </div>
         </div>
 
         <!-- Price Section -->
-        <div v-if="showPrice" class="price-section">
+        <div  class="price-section">
           <span class="price-label">Price:</span>
-          <span class="price">$ {{ product.price.toFixed(2) }}</span>
+          <span class="price">$ {{ product.price }}</span>
         </div>
 
-        <!-- Category Badge -->
         <div class="category-section">
           <span class="category-badge">{{ product.category }}</span>
         </div>
 
-        <!-- Description -->
         <div class="description-section">
           <h2 class="section-title">About this item</h2>
           <p class="description-text">{{ product.description }}</p>
         </div>
-
-        <!-- CTA Buttons -->
-        <div class="action-buttons">
-          <button class="btn btn-primary">Add to Cart</button>
-          <button class="btn btn-secondary">Buy Now</button>
-        </div>
+<BuyBox :product="product" :display-quantity="true" :display-remove="true" />
       </div>
     </div>
 
-    <!-- Additional Information -->
-    <div class="info-panel">
-      <div class="info-item">
-        <span class="info-label">Product ID:</span>
-        <span class="info-value">#{{ product.id }}</span>
-      </div>
-      <div class="info-item">
-        <span class="info-label">Category:</span>
-        <span class="info-value">{{ product.category }}</span>
-      </div>
-      <div class="info-item">
-        <span class="info-label">Availability:</span>
-        <span class="info-value in-stock">In Stock</span>
-      </div>
-    </div>
   </div>
 </template>
-
 <script setup lang="ts">
 import type { Product } from '@/app/types/product'
-import { useRouter } from 'vue-router'
+import BuyBox from '@/components/organisms/BuyBox.vue';
 
-const router = useRouter()
 
 defineProps<{
   product: Product
   showPrice?: boolean
 }>()
 
-const goToProduct = (id: number) => {
-  router.push(`/product/${id}`)
-}
+
+
 </script>
 
 <style lang="scss" scoped>
@@ -238,35 +214,7 @@ const goToProduct = (id: number) => {
   margin-top: 1.5rem;
 }
 
-.btn {
-  padding: 0.75rem 2rem;
-  font-size: 1rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
 
-.btn-primary {
-  background-color: #ff9900;
-  color: black;
-  flex: 1;
-}
-
-.btn-primary:hover {
-  background-color: #e68a08;
-}
-
-.btn-secondary {
-  background-color: #ffa724;
-  color: black;
-  flex: 1;
-}
-
-.btn-secondary:hover {
-  background-color: #ff9013;
-}
 
 /* Information Panel */
 .info-panel {
@@ -306,6 +254,8 @@ const goToProduct = (id: number) => {
   color: #067d62;
   font-weight: 600;
 }
+
+
 
 /* Responsive Design */
 @media (max-width: 768px) {

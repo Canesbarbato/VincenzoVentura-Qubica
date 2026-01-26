@@ -7,11 +7,13 @@ export type CartItem = {
   id: number
   title: string
   price: number
+  image: string
   quantity: number
 }
 
 export const useCartStore = defineStore('cart', () => {
   const items = useLocalStorage<CartItem[]>('cart-items', [])
+
 
   const subtotal = computed(() =>
     items.value.reduce(
@@ -19,6 +21,12 @@ export const useCartStore = defineStore('cart', () => {
       0
     )
   )
+
+  const isInCart = computed(() => {
+    console.log('isInCart computed called')
+    return (productId: number): boolean =>
+      items.value.some(item => item.id === productId)
+  })
 
   function addItem(product: CartItem) {
     const existing = items.value.find(i => i.id === product.id)
@@ -41,8 +49,9 @@ export const useCartStore = defineStore('cart', () => {
   return {
     items,
     subtotal,
+    isInCart,
     addItem,
     removeItem,
-    clearCart
+    clearCart,
   }
 })
