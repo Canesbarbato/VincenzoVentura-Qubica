@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import { themeOverrides } from './themeOverrides';
+
+
 </script>
 
 <template>
-      <n-config-provider>
+      <n-config-provider :theme-overrides="themeOverrides" >
   <router-view />
   <footer>
   </footer>

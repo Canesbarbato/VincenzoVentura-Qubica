@@ -1,11 +1,21 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
+import CategoryFilters from '@/components/CategoryFilters.vue';
+import LoginButton from '@/components/LoginButton.vue';
+import { useAuthStore } from '@/app/stores/authentication';
+import { storeToRefs } from 'pinia';
+import WishListDrawer from '@/components/WishListDrawer.vue';
 
 const router = useRouter()
 
 const goHome = () => {
   router.push('/')
 }
+const goToCart = () => {
+  router.push('/cart')
+}
+const authStore = useAuthStore()
+const { isAuthenticated } = storeToRefs(authStore)
 </script>
 
 <template>
@@ -35,17 +45,19 @@ const goHome = () => {
 
       <!-- Actions -->
       <n-flex align="center" size="small">
-        <n-button quaternary>
-          Categories
-        </n-button>
+   <CategoryFilters v-if="$route.meta.showCategories"/>
 
-        <n-button quaternary>
+        <n-button v-if="isAuthenticated" quaternary @click="goToCart">
           Cart
         </n-button>
+    <WishListDrawer />
 
-        <n-button type="primary">
-          Sign In
-        </n-button>
+<n-message-provider>
+          <n-dialog-provider>
+            <LoginButton/>
+          </n-dialog-provider>
+        </n-message-provider>
+
       </n-flex>
     </n-flex>
   </header>

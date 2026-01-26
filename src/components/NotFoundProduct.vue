@@ -31,7 +31,7 @@
   text-align: center;
   background: white;
   padding: 3rem 2rem;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   max-width: 500px;
 }
@@ -64,7 +64,7 @@
   background-color: #2c3e50;
   color: white;
   text-decoration: none;
-  border-radius: 4px;
+  border-radius: 0.25rem;
   font-weight: 600;
   transition: background-color 0.3s ease, transform 0.2s ease;
   cursor: pointer;
@@ -72,7 +72,7 @@
 
 .cta-button:hover {
   background-color: #34495e;
-  transform: translateY(-2px);
+  transform: translateY(-0.125rem);
 }
 
 .cta-button:active {

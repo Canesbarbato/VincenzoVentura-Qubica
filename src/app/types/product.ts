@@ -1,5 +1,5 @@
 
-export type Product = {
+export interface Product  {
     id: number
     title: string
     price: number
@@ -11,3 +11,5 @@ export type Product = {
         count: number
     }
 }
+
+export  type AddProduct = {product: Product, quantity?: number}

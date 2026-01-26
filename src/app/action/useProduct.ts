@@ -2,7 +2,9 @@ import { useFetch, useLocalStorage } from '@vueuse/core'
 import { watch, ref } from 'vue'
 import type { Ref } from 'vue'
 import type { Product } from '@/app/types/product'
-
+import type { Categories } from './useCategories'
+import { useRouter, useRoute } from 'vue-router'
+import type { Router, RouteLocationNormalizedLoaded } from 'vue-router'
 
 type UseProductsReturn = {
   data: Ref<Product[] | null>
@@ -12,6 +14,8 @@ type UseProductsReturn = {
 
 type UseProductReturn = {
   data: Ref<Product | null>
+    isFetching: Ref<boolean>
+
   error: Ref<string | null>
 }
 
@@ -27,9 +31,10 @@ export const useProduct = (productId: number): UseProductReturn => {
     } else {
         error.value = `Product with ID ${productId} not found in cache`
     }
-    
-    return { data: product, error }
+
+    return { data: product, isFetching: ref(false), error }
 }
+
 
 export const useProducts = (skipCache = true): UseProductsReturn => {
     const cachedProducts = useLocalStorage<Product[]>('products', [])
@@ -57,5 +62,24 @@ export const useProducts = (skipCache = true): UseProductsReturn => {
     })
     
     return { data, isFetching, error }
+}
+
+
+export const useCategoriesProducts = (  category: Categories,
+  router: Router,
+  route: RouteLocationNormalizedLoaded) : UseProductsReturn => {
+    
+
+    // Update URL query string
+    router.push({
+      path: route.path,
+      query: { category: category }
+    })
+    console.log('Fetching products for category:', category)
+    console.log('Category changed to:', category)
+    const {data, isFetching, error} = useFetch('https://fakestoreapi.com/products/category/' + category)
+        .get()
+        .json()   
+    return {data, isFetching, error}
 }
 

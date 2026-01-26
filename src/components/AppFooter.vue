@@ -23,7 +23,6 @@ const links = ref([
 
 <template>
   <footer class="footer-wrapper">
-    <n-container>
       <n-grid :x-gap="24" :y-gap="24" cols="4" sm-cols="2" xs-cols="1">
         <n-grid-item v-for="(section, idx) in links" :key="idx">
           <h4 class="section-title">{{ section.title }}</h4>
@@ -38,7 +37,6 @@ const links = ref([
       <div class="footer-bottom">
         &copy; {{ new Date().getFullYear() }} STORE. All rights reserved.
       </div>
-    </n-container>
   </footer>
 </template>
 

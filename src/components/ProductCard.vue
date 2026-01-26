@@ -57,25 +57,39 @@
     </div>
 
     <!-- Actions -->
-    <template #action>
+    <template v-if="isAuthenticated" #action>
+      <n-flex direction="horizontal" gap="8px">
       <n-button
         type="warning"
         block
-        @click="goToProduct(product.id)"
+        @click="addItem({...product,quantity:1})"
       >
-        View Product
+        Add to cart
       </n-button>
+            <n-button
+        type="warning"
+        block
+        @click="addToWishlist(product.id)"
+      >
+        Add to wishlistr
+      </n-button>
+      </n-flex>
     </template>
+   
   </n-card>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import type { Product } from '@/app/types/product'
-import { useRouter } from 'vue-router'
 import { NIcon } from 'naive-ui'
 import { NotAvailable as ImgIcon } from '@vicons/carbon'
-
-const router = useRouter()
+import { useProductNavigation } from '@/app/action/useNavigation'
+import { useCartStore } from '@/app/stores/cart';
+import { useAuthStore } from '@/app/stores/authentication'
+import { storeToRefs } from 'pinia'
+import { useWishlistStore } from '@/app/stores/wishlist'
+const { goToProduct } = useProductNavigation()
+const {addItem} = useCartStore()
 const isLoading = ref(true)
 const imageError = ref(false)
 
@@ -83,14 +97,22 @@ defineProps<{
   product: Product
   showPrice?: boolean
 }>()
-const goToProduct = (id: number) => {
-  router.push(`/product/${id}`)
-}
 
 const handleImageError = () => {
   imageError.value = true
   isLoading.value = false
 }
+
+const authStore = useAuthStore()
+const { isAuthenticated } = storeToRefs(authStore)
+
+const WishlistStore = useWishlistStore()
+const { addItem :addToWishlist } = WishlistStore
+const { items } = storeToRefs(WishlistStore)
+
+watch(items, (newItems) => {
+  console.log('Wishlist items updated:', newItems,items.value)
+}, { immediate: true })
 </script>
 <style scoped lang="scss">
 .product-card {
@@ -98,7 +120,7 @@ const handleImageError = () => {
 }
 
 .image-wrapper {
-  height: 200px;
+  height: 12.5rem;
   padding: 1rem;
   display: flex;
   align-items: center;
@@ -150,7 +172,7 @@ const handleImageError = () => {
 }
 
 .title {
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 500;
   line-height: 1.3;
   margin: 0.5rem 0;
@@ -165,17 +187,17 @@ const handleImageError = () => {
 .rating {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 0.375rem;
   margin: 0.25rem 0;
 }
 
 .count {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: #666;
 }
 
 .price {
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 700;
   color: #b12704; /* Amazon-like red */
   margin-top: 0.25rem;
