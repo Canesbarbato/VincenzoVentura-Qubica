@@ -1,23 +1,9 @@
 import { useFetch, useLocalStorage } from '@vueuse/core'
 import { watch, ref } from 'vue'
-import type { Ref } from 'vue'
-import type { Product } from '@/app/types/product'
-import type { Categories } from './useCategories'
-import { useRouter, useRoute } from 'vue-router'
+import type { Ref, ShallowRef } from 'vue'
+import type { Categories, Product, UseProductReturn } from '@/app/types/product'
 import type { Router, RouteLocationNormalizedLoaded } from 'vue-router'
 
-type UseProductsReturn = {
-  data: Ref<Product[] | null>
-  isFetching: Ref<boolean>
-  error: Ref<unknown>
-}
-
-type UseProductReturn = {
-  data: Ref<Product | null>
-    isFetching: Ref<boolean>
-
-  error: Ref<string | null>
-}
 
 export const useProduct = (productId: number): UseProductReturn => {
     const cachedProducts = useLocalStorage<Product[]>('products', [])
@@ -67,7 +53,7 @@ export const useProducts = (skipCache = true): UseProductsReturn => {
 
 export const useCategoriesProducts = (  category: Categories,
   router: Router,
-  route: RouteLocationNormalizedLoaded) : UseProductsReturn => {
+  route: RouteLocationNormalizedLoaded) => {
     if (!category || category === 'All Categories') {
       console.log('No category selected, fetching all products')
       return useProducts()
