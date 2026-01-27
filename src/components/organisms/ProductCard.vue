@@ -63,8 +63,7 @@ import { useCartStore } from '@/app/stores/cart';
 import { useAuthStore } from '@/app/stores/authentication'
 import { storeToRefs } from 'pinia'
 import { useWishlistStore } from '@/app/stores/wishlist'
-import AddToCartButton from './atoms/AddToCartButton.vue';
-import BuyBox from './organisms/BuyBox.vue';
+import BuyBox from '@/components/organisms/BuyBox.vue';
 const { goToProduct } = useProductNavigation()
 const { addItem } = useCartStore()
 const isLoading = ref(true)
