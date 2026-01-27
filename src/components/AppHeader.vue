@@ -5,15 +5,14 @@ import LoginButton from '@/components/LoginButton.vue';
 import { useAuthStore } from '@/app/stores/authentication';
 import { storeToRefs } from 'pinia';
 import WishListDrawer from '@/components/WishListDrawer.vue';
+import CartButton from './molecules/CartButton.vue';
 
 const router = useRouter()
 
 const goHome = () => {
   router.push('/')
 }
-const goToCart = () => {
-  router.push('/cart')
-}
+
 const authStore = useAuthStore()
 const { isAuthenticated } = storeToRefs(authStore)
 </script>
@@ -46,11 +45,13 @@ const { isAuthenticated } = storeToRefs(authStore)
       <!-- Actions -->
       <n-flex align="center" size="small">
    <CategoryFilters v-if="$route.meta.showCategories"/>
+    <n-space :size="24">
+<CartButton />
+    <WishListDrawer  />
 
-        <n-button v-if="isAuthenticated" quaternary @click="goToCart">
-          Cart
-        </n-button>
-    <WishListDrawer />
+
+    </n-space>
+
 
 <n-message-provider>
           <n-dialog-provider>
