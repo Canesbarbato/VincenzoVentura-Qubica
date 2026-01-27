@@ -1,23 +1,27 @@
 <template>
   <div class="category-filters">
-    <button 
-      v-for="category in categories" 
-      :key="category"
-      @click="selectCategory(category)"
-      class="category-btn"
-    >
-      {{ category }}
-    </button>
+  
+  <n-popselect v-model:value="value" :options="options"  @update:value="selectCategory" >
+    <n-button type="info" >{{ value || 'All Categories' }}</n-button>
+  </n-popselect>
   </div>
 </template>
 
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { inject, ref } from 'vue'
+import { inject, ref, watch } from 'vue'
 import { useCategories } from '@/app/action/useCategories'
 const {data:categories , isFetching, error} = useCategories()
 const selectedCategory = inject<Ref<string | null>>('selectedCategory', ref(null))
-
+const options = ref<{value: string, label: string}[]>([])
+const value = ref('All Categories')
+watch(categories, (newCategories) => {
+  console.log('Categories fetched:', newCategories)
+  if (newCategories) {
+    options.value = [...newCategories.map(cat => ({value:cat, label:cat})),{value:'All Categories', label:'All Categories'}]
+  }
+  console.log('Categories updated:', options.value)
+}, { immediate: true })
 const selectCategory = (category: string) => {
   selectedCategory.value = category
   console.log('Selected category:', category)

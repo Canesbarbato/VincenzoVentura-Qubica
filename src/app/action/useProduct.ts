@@ -68,7 +68,10 @@ export const useProducts = (skipCache = true): UseProductsReturn => {
 export const useCategoriesProducts = (  category: Categories,
   router: Router,
   route: RouteLocationNormalizedLoaded) : UseProductsReturn => {
-    
+    if (!category || category === 'All Categories') {
+      console.log('No category selected, fetching all products')
+      return useProducts()
+    }
 
     // Update URL query string
     router.push({
