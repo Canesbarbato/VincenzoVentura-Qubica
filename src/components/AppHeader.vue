@@ -30,7 +30,7 @@ const { isAuthenticated } = storeToRefs(authStore)
         <span class="brand">STORE</span>
         <span class="brand-sub">LOGO</span>
       </div>
-
+   <CategoryFilters v-if="$route.meta.showCategories"/>
       <!-- Search -->
       <n-input-group class="search">
         <n-input
@@ -44,7 +44,6 @@ const { isAuthenticated } = storeToRefs(authStore)
 
       <!-- Actions -->
       <n-flex align="center" size="small">
-   <CategoryFilters v-if="$route.meta.showCategories"/>
     <n-space :size="24">
 <CartButton />
     <WishListDrawer  />
@@ -54,6 +53,8 @@ const { isAuthenticated } = storeToRefs(authStore)
 
 
 <n-message-provider>
+  
+
           <n-dialog-provider>
             <LoginButton/>
           </n-dialog-provider>

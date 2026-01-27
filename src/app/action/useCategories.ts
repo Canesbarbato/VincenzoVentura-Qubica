@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import { useFetch } from '@vueuse/core'
 
-export type Categories = "electronics"|"jewelery"|"men's clothing"|"women's clothing"
+export type Categories = "electronics"|"jewelery"|"men's clothing"|"women's clothing" | "All Categories"
 type UseCategoriesReturn = {
   data: Ref<Categories[] | null>
   isFetching: Ref<boolean>
