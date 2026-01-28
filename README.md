@@ -80,7 +80,7 @@ Metodi principali:
 fetchAllProducts()
 fetchProductsByCategory(category)
 getProductById(id)
-
+```
 ## 🛠 Store principali
 
 ### Cart Store
