@@ -23,7 +23,7 @@ L’applicazione dimostra una **struttura modulare, scalabile e tipizzata**, con
 ---
 
 ##  Struttura del progetto
-
+```
 src/
 ├─ app/
 │ ├─ stores/ # Store Pinia (cart, products, auth, wishlist)
@@ -44,7 +44,7 @@ src/
 ├─ router/
 │ └─ index.ts # Rotte e route guards
 
-
+```
 ---
 
 ##  Architettura e concetti chiave
