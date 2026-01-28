@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, computed, watch, type Ref } from 'vue'
+import { inject, computed, watch, type Ref, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useProductsStore } from '@/app/stores/products'
 import type { Categories } from '@/app/types/product'
@@ -19,7 +19,7 @@ const router = useRouter()
 const route = useRoute()
 
 const selectedCategory =
-  inject<Ref<Categories | null>>('selectedCategory', null)
+  inject<Ref<Categories | null>>('selectedCategory', ref(null))
 
 const store = useProductsStore()
 

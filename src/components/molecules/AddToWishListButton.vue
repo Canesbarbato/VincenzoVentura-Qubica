@@ -13,10 +13,11 @@
 import { Favorite } from '@vicons/carbon'
 import type { Product } from '@/app/types/product';
 import { useWishlistStore } from '@/app/stores/wishlist';
+import type { CartItem } from '@/app/stores/cart';
 
 const { addItem, isInWishlist ,removeItem } = useWishlistStore()
 
 defineProps<{
-    product: Product
+    product: CartItem
 }>()
 </script>

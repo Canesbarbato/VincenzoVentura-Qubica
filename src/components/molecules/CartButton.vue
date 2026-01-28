@@ -13,14 +13,8 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/app/stores/authentication';
 import { storeToRefs } from 'pinia';
 import { ShoppingCart } from '@vicons/carbon'
-import { h } from 'vue'
 import { useCartStore } from '@/app/stores/cart';
 const { items } = storeToRefs(useCartStore())
-function renderIcon() {
-  return h(ShoppingCart, null, {
-    default: () => h(ShoppingCart)
-  })
-}
 
 
     const router = useRouter()

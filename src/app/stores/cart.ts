@@ -21,6 +21,11 @@ export const useCartStore = defineStore('cart', () => {
       0
     )
   )
+function updateQuantity(id: number, quantity: number) {
+  const item = items.value.find(i => i.id === id)
+  if (!item) return
+  item.quantity = Math.max(0, Math.min(999, quantity))
+}
 
   const isInCart = computed(() => {
     console.log('isInCart computed called')
@@ -50,6 +55,7 @@ export const useCartStore = defineStore('cart', () => {
     items,
     subtotal,
     isInCart,
+    updateQuantity,
     addItem,
     removeItem,
     clearCart,

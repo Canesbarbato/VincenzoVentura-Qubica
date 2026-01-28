@@ -1,9 +1,7 @@
 <template>
   <n-infinite-scroll style="height: 100%" :distance="10" >
     <button v-if="items.length > 0" @click="clearWishlist">delete wishlist</button>
-    <div v-for="(item,i) in items" :key="i" class="item">
-      {{ i }}
-    </div>
+<product-tile :is-horizontal="false" :cart-items="(items as CartItem[])" :display-wishlist="true" :display-remove="false" :display-addto-cart="false" :display-quantity="false"/>
   </n-infinite-scroll>
 </template>
 
@@ -11,6 +9,8 @@
 import { useWishlistStore } from '@/app/stores/wishlist'
 import { storeToRefs } from 'pinia'
 import { ref, watch } from 'vue'
+import ProductTile from './organisms/ProductTile.vue'
+import type { CartItem } from '@/app/stores/cart'
 const WishlistStore = useWishlistStore()
 const { items } = storeToRefs(WishlistStore)
 const { clearWishlist } = WishlistStore

@@ -4,36 +4,8 @@
     <div class="cart-items">
       <n-card title="Shopping Cart" bordered>
         <template v-if="cartItems.length">
-          <n-space vertical size="large">
-            <n-card
-              v-for="item in cartItems"
-              :key="item.id"
-              size="small"
-              bordered
-            >
-            <n-flex justify="space-between">
-              <n-flex>
-              <n-image :src="'ble'" :alt="item.title" class="cart-item-image" />
-                 <n-flex vertical justify="start" class="item-row">
-                <div class="item-info">
-               <n-text strong align-text="left">{{ item.title }}</n-text>
-               <br />
-                  <!-- <n-text class="price">${{ item.price.toFixed(2) }}</n-text> -->
-                                </div>
-                </n-flex>
-                </n-flex>
+      <product-tile  :cart-items="cartItems" :display-wishlist="false" :is-horizontal="true" :display-quantity="true" />
 
-                      <n-input-number
-                  v-model:value="item.quantity"
-                  min="1"
-                  size="small"
-                />
-            </n-flex>
-         
-
-      
-            </n-card>
-          </n-space>
          
           <div class="cart-footer"  @click="clearCart">
             <n-button type="error" block>
@@ -43,7 +15,8 @@
         </template>
 
         <!-- EMPTY STATE -->
-        <template v-else>
+                 <template v-else>
+
           <n-empty description="Your cart is empty">
             <template #extra>
               <n-button type="primary" @click="goToProducts">
@@ -56,12 +29,12 @@
     </div>
 
     <!-- RIGHT: Summary -->
-    <div class="cart-summary">
+   <div class="cart-summary">
       <n-card title="Order Summary" bordered>
         <n-space vertical>
           <div class="summary-row">
             <span>Subtotal</span>
-         <!--<strong>${{ subtotal.toFixed(2) }}</strong>-->
+        <strong>${{ subtotal.toFixed(2) }}</strong>
           </div>
 
           <div class="summary-row">
@@ -89,34 +62,16 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed,watch , reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import  {useCartStore} from '@/app/stores/cart'
-type CartItem = {
-  id: number
-  title: string
-  price: number
-  quantity: number
-}
+import ProductTile from '@/components/organisms/ProductTile.vue'
+import { storeToRefs } from 'pinia'
+import { watch } from 'vue'
 
 const router = useRouter()
-const { items: cartItems, clearCart } = useCartStore()
-/*const { cartItems, clearCart } = useGlobalCart()
-console.log('Cart Items:', cartItems)
-watch(cartItems, (newItems) => {
-  console.log('Updated Cart Items:', newItems)
-})    
-//const cartItems = reactive<CartItem[]>([
-  // Example item
-  // { id: 1, title: 'Product Name', price: 29.99, quantity: 1 }
-//])
-
-/*const subtotal = computed(() =>
-  cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  )
-)*/
+const cartStore = useCartStore()
+const { items: cartItems, subtotal } = storeToRefs(cartStore)
+const { clearCart } = cartStore
 
 const goToProducts = () => {
   router.push({ name: 'products' })
