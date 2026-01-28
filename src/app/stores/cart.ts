@@ -8,7 +8,7 @@ export type CartItem = {
   title: string
   price: number
   image: string
-  quantity: number
+  quantity?: number
 }
 
 export const useCartStore = defineStore('cart', () => {
@@ -17,7 +17,9 @@ export const useCartStore = defineStore('cart', () => {
 
   const subtotal = computed(() =>
     items.value.reduce(
-      (sum, item) => sum + item.price * item.quantity,
+      (sum, item) => {
+        const quantity = item?.quantity ||  1
+        return sum + item.price * quantity},
       0
     )
   )
@@ -36,7 +38,7 @@ function updateQuantity(id: number, quantity: number) {
   function addItem(product: CartItem) {
     const existing = items.value.find(i => i.id === product.id)
     if (existing) {
-      existing.quantity++
+      existing.quantity =  existing.quantity  ?    existing.quantity++ : 1 
     } else {
       items.value.push({ ...product, quantity: 1 })
     }
