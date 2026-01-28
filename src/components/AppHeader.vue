@@ -24,6 +24,7 @@ const { isAuthenticated } = storeToRefs(authStore)
       justify="space-between"
       class="header-content"
       size="large"
+      wrap="true"
     >
       <!-- Logo -->
       <div class="logo" @click="goHome">
@@ -70,7 +71,8 @@ const { isAuthenticated } = storeToRefs(authStore)
   position: sticky;
   top: 0;
   z-index: 100;
-  height: 64px;
+  height: auto;
+  padding: 1rem 2rem;
   background-color: #131921; /* Amazon dark */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
