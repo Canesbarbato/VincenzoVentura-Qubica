@@ -6,9 +6,7 @@
         </template>
 <script setup lang="ts">
 import { ShoppingCartArrowDown } from '@vicons/carbon'
-import { useCartStore } from '@/app/stores/cart';
-import type { Product } from '@/app/types/product';
-import { useAuthStore } from '@/app/stores/authentication';
+import { useCartStore, type CartItem } from '@/app/stores/cart';
 import { h } from 'vue';
 
 const { addItem } = useCartStore()
@@ -19,7 +17,7 @@ function renderIcon() {
   })
 }
 defineProps<{
-    product: Product
+    product: CartItem
     quantity: number
 }>()
 </script>

@@ -1,38 +1,45 @@
 <template>
-        <n-flex v-if="isAuthenticated" align="center" gap="16px" justify="space-between">
+  <n-flex v-if="isAuthenticated" :vertical="!isHorizontal" align="center" gap="16px" justify="space-between">
 
-          <div v-if="displayQuantity" class="quantity-control">
-            <n-button size="small" quaternary :disabled="quantity <= 0" @click="decrement">
-              −
-            </n-button>
+    <div v-if="displayQuantity" class="quantity-control">
+      <n-button size="small" quaternary :disabled="quantity <= 0" @click="decrement">
+        −
+      </n-button>
 
-            <n-input-number :value="quantity" :min="0" :max="999" size="small" :show-button="false"
-              @update:value="update" class="input" />
+      <n-input-number :value="quantity" :min="0" :max="999" size="small" :show-button="false" @update:value="update"
+        class="input" />
 
-            <n-button size="small" quaternary :disabled="quantity >= 999" @click="increment">
-              +
-            </n-button>
-          </div>
-        
-          <AddToCartButton  :product="product" :quantity="quantity" />
-          <RemoveFromCartButton v-if="displayRemove"  :productId="product.id" />
-          <AddToWishListButton :product="product" />
-
-        </n-flex>
-    </template>
-    <script setup lang="ts">
-import type { Product } from '@/app/types/product';
+      <n-button size="small" quaternary :disabled="quantity >= 999" @click="increment">
+        +
+      </n-button>
+    </div>
+<n-flex justify="center" >
+    <AddToCartButton v-if="displayAddToCart":product="product" :quantity="quantity" />
+    <RemoveFromCartButton v-if="displayRemove" :productId="product.id" />
+    <AddToWishListButton :product="product" v-if="displayWishlist" />
+</n-flex>
+  </n-flex>
+</template>
+<script setup lang="ts">
 import AddToCartButton from '@/components/molecules/AddToCartButton.vue';
 import RemoveFromCartButton from '@/components/molecules/RemoveFromCartButton.vue';
 import AddToWishListButton from '@/components/molecules/AddToWishListButton.vue';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useAuthStore } from '@/app/stores/authentication';
 import { storeToRefs } from 'pinia';
+import { useCartStore, type CartItem } from '@/app/stores/cart';
 
 const authStore = useAuthStore()
 const { isAuthenticated } = storeToRefs(authStore)
+const {updateQuantity} = useCartStore()
+const quantity = computed({
+  get: () => props.product.quantity ?? 1,
+  set: (value: number) => {
+    updateQuantity(props.product.id, value)
+  }
+})
 
-let quantity = ref(1)
+
 function increment() {
   const next = quantity.value + 1
   if (next > 999) return
@@ -55,18 +62,27 @@ function update(value: number) {
 }
 const props = withDefaults(
   defineProps<{
-       product: Product,
-    displayQuantity?: boolean ,
+    product: CartItem,
+    displayQuantity?: boolean,
+    displayAddToCart?: boolean,
+
     displayRemove?: boolean,
+    isHorizontal?: boolean,
+    displayWishlist?: boolean,
   }>(),
   {
+        displayAddToCart: true,
+
     displayQuantity: false,
     displayRemove: false,
+    isHorizontal: true,
+    displayWishlist: true
+
   }
 )
-    </script>
-    <style scoped>
-        .quantity-control {
+</script>
+<style scoped>
+.quantity-control {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -76,4 +92,4 @@ const props = withDefaults(
   width: 64px;
   text-align: center;
 }
-    </style>
+</style>
