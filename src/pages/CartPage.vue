@@ -19,9 +19,7 @@
 
           <n-empty description="Your cart is empty">
             <template #extra>
-              <n-button type="primary" @click="goToProducts">
-                Continue Shopping
-              </n-button>
+    
             </template>
           </n-empty>
         </template>
